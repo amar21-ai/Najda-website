@@ -1,0 +1,3972 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NAJDA — Maritime Safety Wearables</title>
+    <meta
+      name="description"
+      content="NAJDA smart wearable safety devices designed for sea and water environments. GPS tracking, vital signs monitoring, and emergency response."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #0a1628;
+        --navy-mid: #112240;
+        --navy-light: #1e3a5f;
+        --teal: #00b4d8;
+        --teal-mid: #0096b4;
+        --teal-dark: #006d8a;
+        --teal-pale: #caf0f8;
+        --aqua: #48cae4;
+        --white: #f8faff;
+        --offwhite: #eef2f7;
+        --muted: #8a9bb5;
+        --text-body: #c5d0e0;
+        --gold: #e9c46a;
+        --danger: #e63946;
+        --success: #06d6a0;
+        --card-bg: rgba(17, 34, 64, 0.8);
+        --border: rgba(0, 180, 216, 0.15);
+        --glow: 0 0 40px rgba(0, 180, 216, 0.12);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+        overflow-x: hidden;
+      }
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: var(--navy);
+        color: var(--white);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: 0 2rem;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(10, 22, 40, 0.85);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        transition: all 0.3s;
+      }
+      .nav-logo {
+        font-family: "Inter", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--white);
+        text-decoration: none;
+        letter-spacing: 2px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .nav-logo span {
+        color: var(--teal);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        list-style: none;
+      }
+      .nav-links a {
+        color: var(--text-body);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+        transition: color 0.2s;
+        cursor: pointer;
+      }
+      .nav-links a:hover {
+        color: var(--teal);
+      }
+      .nav-cta {
+        background: var(--teal);
+        color: var(--navy);
+        padding: 0.6rem 1.4rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all 0.2s;
+        cursor: pointer;
+        border: none;
+      }
+      .nav-cta:hover {
+        background: var(--aqua);
+        transform: translateY(-1px);
+      }
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 4px;
+      }
+      .hamburger span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--white);
+        border-radius: 2px;
+        transition: all 0.3s;
+      }
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--navy);
+        padding: 2rem;
+        border-bottom: 1px solid var(--border);
+        z-index: 999;
+      }
+      .mobile-menu.open {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .mobile-menu a {
+        color: var(--text-body);
+        font-size: 1.1rem;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      /* PAGES */
+      .page {
+        display: none;
+        padding-top: 70px;
+        min-height: 100vh;
+      }
+      .page.active {
+        display: block;
+      }
+
+      /* HERO */
+      .hero {
+        min-height: calc(100vh - 70px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        padding: 4rem 2rem;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 30% 50%,
+            rgba(0, 180, 216, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse at 80% 20%,
+            rgba(72, 202, 228, 0.06) 0%,
+            transparent 50%
+          ),
+          linear-gradient(180deg, var(--navy) 0%, #081525 100%);
+      }
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 180, 216, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 180, 216, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        opacity: 0.6;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 700px;
+        text-align: center;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(0, 180, 216, 0.1);
+        border: 1px solid rgba(0, 180, 216, 0.25);
+        border-radius: 50px;
+        padding: 0.4rem 1.2rem;
+        font-size: 0.8rem;
+        color: var(--teal);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+      }
+      .hero h1 {
+        font-size: clamp(2.8rem, 7vw, 5rem);
+        font-weight: 800;
+        line-height: 1.05;
+        margin-bottom: 1.5rem;
+        letter-spacing: -1px;
+      }
+      .hero h1 .accent {
+        color: var(--teal);
+        display: block;
+      }
+      .hero p {
+        font-size: 1.15rem;
+        color: var(--text-body);
+        max-width: 540px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+        font-weight: 300;
+      }
+      .hero-btns {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        background: var(--teal);
+        color: var(--navy);
+        padding: 0.85rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.25s;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .btn-primary:hover {
+        background: var(--aqua);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 180, 216, 0.3);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--white);
+        padding: 0.85rem 2rem;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.25s;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        text-decoration: none;
+      }
+      .btn-outline:hover {
+        border-color: var(--teal);
+        color: var(--teal);
+        transform: translateY(-2px);
+      }
+      .hero-visual {
+        position: relative;
+        margin-top: 4rem;
+      }
+      .hero-device {
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 180, 216, 0.15) 0%,
+          rgba(0, 180, 216, 0.05) 50%,
+          transparent 70%
+        );
+        border: 1px solid rgba(0, 180, 216, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-16px);
+        }
+      }
+      .device-inner {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(0, 180, 216, 0.2),
+          rgba(17, 34, 64, 0.9)
+        );
+        border: 2px solid rgba(0, 180, 216, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+      }
+      .orbit {
+        position: absolute;
+        border: 1px solid rgba(0, 180, 216, 0.1);
+        border-radius: 50%;
+        animation: spin 20s linear infinite;
+      }
+      .orbit-1 {
+        width: 320px;
+        height: 320px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .orbit-2 {
+        width: 400px;
+        height: 400px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-direction: reverse;
+        animation-duration: 30s;
+      }
+      .orbit-dot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: var(--teal);
+        border-radius: 50%;
+        top: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 0 0 10px var(--teal);
+      }
+      @keyframes spin {
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      /* STATS BAR */
+      .stats-bar {
+        background: var(--navy-mid);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        padding: 2.5rem 2rem;
+      }
+      .stats-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 2rem;
+        text-align: center;
+      }
+      .stat-num {
+        font-family: "Inter", sans-serif;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--teal);
+        display: block;
+      }
+      .stat-label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        letter-spacing: 0.5px;
+        margin-top: 0.25rem;
+      }
+
+      /* SECTION */
+      section {
+        padding: 6rem 2rem;
+      }
+      .section-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .section-tag {
+        font-family: "Inter", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--teal);
+        margin-bottom: 1rem;
+      }
+      .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        color: var(--white);
+      }
+      .section-title span {
+        color: var(--teal);
+      }
+      .section-desc {
+        font-size: 1.05rem;
+        color: var(--text-body);
+        max-width: 560px;
+        line-height: 1.75;
+        font-weight: 300;
+      }
+
+      /* FEATURES */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 4rem;
+      }
+      .feature-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: all 0.3s;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--teal),
+          transparent
+        );
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .feature-card:hover {
+        border-color: rgba(0, 180, 216, 0.3);
+        transform: translateY(-4px);
+        box-shadow: var(--glow);
+      }
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+      .feature-icon {
+        width: 52px;
+        height: 52px;
+        background: rgba(0, 180, 216, 0.1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1.25rem;
+        border: 1px solid rgba(0, 180, 216, 0.2);
+      }
+      .feature-card h3 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+        color: var(--white);
+      }
+      .feature-card p {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      /* PRODUCTS */
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 2rem;
+        margin-top: 4rem;
+      }
+      .product-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.35s;
+        backdrop-filter: blur(10px);
+      }
+      .product-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(0, 180, 216, 0.35);
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          var(--glow);
+      }
+      .product-img {
+        height: 240px;
+        background: radial-gradient(
+          circle at 50% 60%,
+          rgba(0, 180, 216, 0.15),
+          rgba(10, 22, 40, 0.9)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        position: relative;
+        border-bottom: 1px solid var(--border);
+      }
+      .product-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(230, 57, 70, 0.15);
+        color: #ff6b78;
+        border: 1px solid rgba(230, 57, 70, 0.3);
+        padding: 0.35rem 0.85rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        font-family: "Inter", sans-serif;
+      }
+      .product-info {
+        padding: 1.75rem;
+      }
+      .product-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 0.5rem;
+      }
+      .product-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 1.25rem;
+      }
+      .product-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .product-features li {
+        font-size: 0.85rem;
+        color: var(--text-body);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .product-features li::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--teal);
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .product-price {
+        font-family: "Inter", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 1.25rem;
+      }
+      .product-price span {
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 400;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      .product-btns {
+        display: flex;
+        gap: 0.75rem;
+      }
+      .btn-sm {
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: none;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      .btn-teal {
+        background: var(--teal);
+        color: var(--navy);
+      }
+      .btn-teal:hover {
+        background: var(--aqua);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--white);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .btn-ghost:hover {
+        border-color: var(--teal);
+        color: var(--teal);
+      }
+
+      /* PRODUCT DETAIL */
+      .product-detail-hero {
+        padding: 5rem 2rem 3rem;
+        background: radial-gradient(
+          ellipse at top,
+          rgba(0, 180, 216, 0.07),
+          transparent 60%
+        );
+      }
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: start;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .detail-img-wrap {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .detail-img-wrap::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 50% 40%,
+          rgba(0, 180, 216, 0.1),
+          transparent 60%
+        );
+      }
+      .detail-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(230, 57, 70, 0.12);
+        color: #ff6b78;
+        border: 1px solid rgba(230, 57, 70, 0.25);
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-family: "Inter", sans-serif;
+      }
+      .detail-title {
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+      .detail-desc {
+        color: var(--text-body);
+        line-height: 1.75;
+        margin-bottom: 2rem;
+        font-weight: 300;
+        font-size: 1.05rem;
+      }
+      .spec-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+      }
+      .spec-item {
+        background: rgba(0, 180, 216, 0.06);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.85rem 1rem;
+      }
+      .spec-label {
+        font-size: 0.75rem;
+        color: var(--muted);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+      .spec-val {
+        font-size: 0.95rem;
+        color: var(--white);
+        font-weight: 500;
+      }
+      .detail-price {
+        font-family: "Inter", sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--white);
+        margin-bottom: 1.5rem;
+      }
+      .detail-btns {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      /* FAQ */
+      .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 2.5rem;
+      }
+      .faq-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .faq-q {
+        padding: 1.25rem 1.5rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 500;
+        color: var(--white);
+        transition: 0.2s;
+      }
+      .faq-q:hover {
+        color: var(--teal);
+      }
+      .faq-q span {
+        font-size: 1.25rem;
+        color: var(--teal);
+        transition: 0.3s;
+      }
+      .faq-a {
+        display: none;
+        padding: 0 1.5rem 1.25rem;
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 0.95rem;
+      }
+      .faq-item.open .faq-a {
+        display: block;
+      }
+      .faq-item.open .faq-q span {
+        transform: rotate(45deg);
+      }
+
+      /* PREORDER */
+      .preorder-wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+      }
+      .preorder-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+      .stock-banner {
+        background: rgba(230, 57, 70, 0.08);
+        border: 1px solid rgba(230, 57, 70, 0.2);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .stock-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--danger);
+        border-radius: 50%;
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(1.3);
+        }
+      }
+      .stock-text {
+        flex: 1;
+      }
+      .stock-text strong {
+        color: var(--danger);
+        font-family: "Inter", sans-serif;
+      }
+      .stock-text p {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 0.2rem;
+      }
+      .preorder-available {
+        background: rgba(0, 180, 216, 0.08);
+        border: 1px solid rgba(0, 180, 216, 0.2);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        color: var(--teal);
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .form-group.full {
+        grid-column: 1/-1;
+      }
+      label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+      label span {
+        color: var(--danger);
+      }
+      input,
+      select,
+      textarea {
+        background: rgba(17, 34, 64, 0.8);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.85rem 1rem;
+        color: var(--white);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        width: 100%;
+        outline: none;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: rgba(138, 155, 181, 0.5);
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: rgba(0, 180, 216, 0.5);
+        box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.08);
+      }
+      input.error,
+      select.error,
+      textarea.error {
+        border-color: rgba(230, 57, 70, 0.5);
+      }
+      .field-error {
+        font-size: 0.78rem;
+        color: #ff6b78;
+        margin-top: 0.25rem;
+        display: none;
+      }
+      .field-error.show {
+        display: block;
+      }
+      select option {
+        background: var(--navy-mid);
+      }
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+      .qty-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .qty-btn {
+        width: 36px;
+        height: 36px;
+        background: rgba(0, 180, 216, 0.1);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--teal);
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+        flex-shrink: 0;
+      }
+      .qty-btn:hover {
+        background: rgba(0, 180, 216, 0.2);
+      }
+      .qty-display {
+        font-family: "Inter", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        min-width: 2rem;
+        text-align: center;
+        color: var(--white);
+      }
+      .submit-btn {
+        width: 100%;
+        padding: 1.1rem;
+        background: var(--teal);
+        color: var(--navy);
+        border: none;
+        border-radius: 10px;
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.25s;
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+      }
+      .submit-btn:hover {
+        background: var(--aqua);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 180, 216, 0.3);
+      }
+      .submit-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .success-state {
+        display: none;
+        text-align: center;
+        padding: 3rem 2rem;
+      }
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(6, 214, 160, 0.15);
+        border: 2px solid rgba(6, 214, 160, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+      }
+      .success-state h2 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: var(--success);
+      }
+      .success-state p {
+        color: var(--text-body);
+        line-height: 1.7;
+        max-width: 480px;
+        margin: 0 auto 2rem;
+      }
+
+      /* ABOUT */
+      .about-story {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+        margin-bottom: 6rem;
+      }
+      .about-visual {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 7rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .about-visual::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(0, 180, 216, 0.1),
+          transparent 60%
+        );
+      }
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-top: 4rem;
+      }
+      .value-card {
+        border-left: 3px solid var(--teal);
+        padding: 1.5rem 1.5rem 1.5rem 2rem;
+        background: var(--card-bg);
+        border-radius: 0 12px 12px 0;
+      }
+      .value-card h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--white);
+      }
+      .value-card p {
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-top: 3rem;
+      }
+      .team-card {
+        text-align: center;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2rem 1.5rem;
+      }
+      .team-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(0, 180, 216, 0.12);
+        border: 2px solid rgba(0, 180, 216, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin: 0 auto 1rem;
+      }
+      .team-name {
+        font-weight: 700;
+        font-size: 1.05rem;
+        margin-bottom: 0.25rem;
+        color: var(--white);
+      }
+      .team-role {
+        font-size: 0.85rem;
+        color: var(--teal);
+      }
+      .team-bio {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.5rem;
+        line-height: 1.6;
+      }
+
+      /* TRUST */
+      .trust-section {
+        background: var(--navy-mid);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+      .trust-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+      .trust-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .trust-icon {
+        width: 44px;
+        height: 44px;
+        background: rgba(0, 180, 216, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        border: 1px solid rgba(0, 180, 216, 0.2);
+      }
+      .trust-item h4 {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+        color: var(--white);
+      }
+      .trust-item p {
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      /* TESTIMONIALS */
+      .testimonials {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 3rem;
+      }
+      .testimonial {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2rem;
+      }
+      .stars {
+        color: var(--gold);
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+      }
+      .testimonial q {
+        font-style: italic;
+        color: var(--text-body);
+        line-height: 1.7;
+        display: block;
+        margin-bottom: 1.25rem;
+        quotes: none;
+      }
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .t-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(0, 180, 216, 0.15);
+        border: 1px solid rgba(0, 180, 216, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--teal);
+      }
+      .t-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--white);
+      }
+      .t-role {
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+
+      /* CONTACT */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 4rem;
+        align-items: start;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+      .c-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 180, 216, 0.1);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 1rem;
+      }
+      .c-label {
+        font-size: 0.8rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+      }
+      .c-val {
+        font-size: 0.95rem;
+        color: var(--white);
+        font-weight: 500;
+      }
+      .contact-form-wrap {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 2.5rem;
+      }
+      @media (max-width: 680px) {
+        .contact-form-wrap {
+          padding: 1.5rem 1rem;
+          border-radius: 14px;
+        }
+      }
+
+      /* ADMIN */
+      .admin-wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+      }
+      .admin-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 3rem;
+      }
+      .admin-stat {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 1.5rem;
+      }
+      .admin-stat-num {
+        font-family: "Inter", sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--teal);
+        display: block;
+      }
+      .admin-stat-label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 0.25rem;
+      }
+      .admin-controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .admin-controls input {
+        max-width: 280px;
+      }
+      .admin-filter-btn {
+        padding: 0.6rem 1.25rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .admin-filter-btn.active,
+      .admin-filter-btn:hover {
+        background: rgba(0, 180, 216, 0.1);
+        color: var(--teal);
+        border-color: rgba(0, 180, 216, 0.3);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      thead th {
+        text-align: left;
+        padding: 0.75rem 1rem;
+        font-size: 0.78rem;
+        color: var(--muted);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border);
+        font-weight: 500;
+      }
+      tbody tr {
+        border-bottom: 1px solid rgba(0, 180, 216, 0.06);
+        transition: 0.2s;
+      }
+      tbody tr:hover {
+        background: rgba(0, 180, 216, 0.04);
+      }
+      tbody td {
+        padding: 0.85rem 1rem;
+        font-size: 0.875rem;
+        color: var(--text-body);
+      }
+      .td-name {
+        color: var(--white);
+        font-weight: 500;
+      }
+      .status-badge {
+        padding: 0.3rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        font-family: "Inter", sans-serif;
+      }
+      .status-preorder {
+        background: rgba(233, 196, 106, 0.12);
+        color: var(--gold);
+        border: 1px solid rgba(233, 196, 106, 0.25);
+      }
+      .status-pending {
+        background: rgba(0, 180, 216, 0.1);
+        color: var(--teal);
+        border: 1px solid rgba(0, 180, 216, 0.2);
+      }
+      .export-btn {
+        background: rgba(6, 214, 160, 0.1);
+        border: 1px solid rgba(6, 214, 160, 0.25);
+        color: var(--success);
+        padding: 0.6rem 1.25rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .export-btn:hover {
+        background: rgba(6, 214, 160, 0.2);
+      }
+      .table-wrap {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        overflow-x: auto;
+      }
+      .no-orders {
+        text-align: center;
+        padding: 4rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      /* FOOTER */
+      footer {
+        background: var(--navy-mid);
+        border-top: 1px solid var(--border);
+        padding: 5rem 2rem 3rem;
+      }
+      .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 3rem;
+        margin-bottom: 4rem;
+      }
+      .footer-brand .nav-logo {
+        margin-bottom: 1rem;
+        display: inline-flex;
+      }
+      .footer-brand p {
+        font-size: 0.875rem;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 280px;
+      }
+      .footer-socials {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+      }
+      .social-link {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.2s;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .social-link:hover {
+        border-color: var(--teal);
+        color: var(--teal);
+      }
+      .footer-col h4 {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 1.25rem;
+        letter-spacing: 0.5px;
+        font-family: "Inter", sans-serif;
+      }
+      .footer-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .footer-col a {
+        font-size: 0.875rem;
+        color: var(--muted);
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .footer-col a:hover {
+        color: var(--teal);
+      }
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .footer-bottom p {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .newsletter-wrap {
+        display: flex;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .newsletter-wrap input {
+        flex: 1;
+        max-width: 240px;
+      }
+      .newsletter-wrap button {
+        background: var(--teal);
+        color: var(--navy);
+        border: none;
+        border-radius: 8px;
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: 0.2s;
+      }
+      .newsletter-wrap button:hover {
+        background: var(--aqua);
+      }
+
+      /* NOTICE + TOAST */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--navy-mid);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        font-size: 0.9rem;
+        color: var(--white);
+        z-index: 9999;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s;
+        max-width: 320px;
+      }
+      .toast.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .toast.success {
+        border-color: rgba(6, 214, 160, 0.4);
+        background: rgba(6, 214, 160, 0.08);
+      }
+      .toast.error-t {
+        border-color: rgba(230, 57, 70, 0.4);
+      }
+
+      /* CTA SECTION */
+      .cta-section {
+        background: radial-gradient(
+          ellipse at center,
+          rgba(0, 180, 216, 0.1),
+          transparent 60%
+        );
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        text-align: center;
+        padding: 6rem 2rem;
+      }
+
+      /* RESPONSIVE */
+
+      /* Tablet */
+      @media (max-width: 900px) {
+        .detail-grid,
+        .about-story,
+        .contact-grid {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
+        .detail-img-wrap {
+          max-width: 400px;
+          margin: 0 auto;
+        }
+        .about-visual {
+          max-width: 360px;
+          margin: 0 auto;
+        }
+        section {
+          padding: 4rem 1.5rem;
+        }
+        .two-col-grid {
+          grid-template-columns: 1fr !important;
+          gap: 2rem !important;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 680px) {
+        .nav-links,
+        .nav-cta {
+          display: none;
+        }
+        .hamburger {
+          display: flex;
+        }
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero h1 {
+          font-size: 2rem;
+        }
+        .hero p {
+          font-size: 1rem;
+        }
+        .products-grid {
+          grid-template-columns: 1fr;
+        }
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-device {
+          width: 180px;
+          height: 180px;
+        }
+        .device-inner {
+          width: 120px;
+          height: 120px;
+        }
+        .orbit-1 {
+          width: 220px;
+          height: 220px;
+        }
+        .orbit-2 {
+          width: 280px;
+          height: 280px;
+        }
+        .hero {
+          padding: 2rem 1rem;
+        }
+        .hero-btns {
+          flex-direction: column;
+          align-items: center;
+        }
+        .hero-btns .btn-primary,
+        .hero-btns .btn-outline {
+          width: 100%;
+          max-width: 320px;
+          justify-content: center;
+        }
+        section {
+          padding: 3rem 1rem;
+        }
+        .stats-inner {
+          grid-template-columns: 1fr 1fr;
+          gap: 1.25rem;
+        }
+        .stat-num {
+          font-size: 1.7rem;
+        }
+        .section-title {
+          font-size: 1.7rem;
+        }
+        .two-col-grid {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
+        }
+        .mini-cards-grid {
+          grid-template-columns: 1fr 1fr !important;
+          gap: 0.75rem !important;
+        }
+        .values-grid {
+          grid-template-columns: 1fr;
+        }
+        .trust-grid {
+          grid-template-columns: 1fr;
+        }
+        .testimonials {
+          grid-template-columns: 1fr;
+        }
+        .spec-grid {
+          grid-template-columns: 1fr;
+        }
+        .detail-btns {
+          flex-direction: column;
+        }
+        .detail-btns .btn-primary,
+        .detail-btns .btn-outline {
+          width: 100%;
+          justify-content: center;
+          text-align: center;
+        }
+        .detail-price {
+          font-size: 1.5rem;
+        }
+        .preorder-wrap {
+          padding: 2rem 1rem;
+        }
+        .cta-section {
+          padding: 3rem 1rem;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.75rem;
+        }
+        .newsletter-wrap {
+          flex-direction: column;
+        }
+        .newsletter-wrap input {
+          max-width: 100%;
+        }
+        .product-btns {
+          flex-direction: column;
+        }
+        .product-btns .btn-sm {
+          width: 100%;
+          text-align: center;
+        }
+        .admin-controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .admin-controls input {
+          max-width: 100%;
+        }
+        .table-wrap {
+          font-size: 0.78rem;
+        }
+      }
+
+      /* Small phones */
+      @media (max-width: 400px) {
+        .stats-inner {
+          grid-template-columns: 1fr;
+        }
+        .mini-cards-grid {
+          grid-template-columns: 1fr !important;
+        }
+        nav {
+          padding: 0 1rem;
+        }
+        .hero h1 {
+          font-size: 1.75rem;
+        }
+        .admin-wrap {
+          padding: 1.5rem 0.75rem;
+        }
+      }
+
+      /* LOADING */
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(10, 22, 40, 0.4);
+        border-top-color: var(--navy);
+        border-radius: 50%;
+        animation: spin-anim 0.7s linear infinite;
+      }
+      @keyframes spin-anim {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* BACK BTN */
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--muted);
+        font-size: 0.875rem;
+        cursor: pointer;
+        margin-bottom: 2rem;
+        transition: 0.2s;
+        background: none;
+        border: none;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        padding: 0;
+      }
+      .back-btn:hover {
+        color: var(--teal);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+      <a class="nav-logo" onclick="showPage('home')">NAJ<span>DA</span></a>
+      <ul class="nav-links">
+        <li><a onclick="showPage('home')">Home</a></li>
+        <li><a onclick="showPage('products')">Products</a></li>
+        <li><a onclick="showPage('about')">About</a></li>
+        <li><a onclick="showPage('contact')">Contact</a></li>
+        <!-- <li><a onclick="showPage('admin')" style="color:var(--teal);font-size:.8rem">Admin</a></li> -->
+      </ul>
+      <button class="nav-cta" onclick="showPage('preorder')">
+        Preorder Now
+      </button>
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a
+        onclick="
+          showPage('home');
+          toggleMenu();
+        "
+        >Home</a
+      >
+      <a
+        onclick="
+          showPage('products');
+          toggleMenu();
+        "
+        >Products</a
+      >
+      <a
+        onclick="
+          showPage('about');
+          toggleMenu();
+        "
+        >About</a
+      >
+      <a
+        onclick="
+          showPage('contact');
+          toggleMenu();
+        "
+        >Contact</a
+      >
+      <a
+        onclick="
+          showPage('preorder');
+          toggleMenu();
+        "
+        >Preorder Now</a
+      >
+      <!-- <a onclick="showPage('admin');toggleMenu()" style="color:var(--teal)">Admin Dashboard</a> -->
+    </div>
+
+    <!-- ======================== HOME PAGE ======================== -->
+    <div id="page-home" class="page active">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
+        <div
+          style="
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto;
+          "
+        >
+          <div class="hero-badge">🌊 Maritime Safety Redefined</div>
+          <h1>
+            Safety That Wears<br /><span class="accent">With You At Sea</span>
+          </h1>
+          <p>
+            NAJDA builds intelligent wearable devices that keep mariners,
+            divers, and water professionals safe — with real-time GPS, vital
+            monitoring, and instant SOS response.
+          </p>
+          <div class="hero-btns">
+            <button class="btn-primary" onclick="showPage('products')">
+              View Products →
+            </button>
+            <button class="btn-outline" onclick="showPage('preorder')">
+              Preorder Now
+            </button>
+          </div>
+          <div style="margin-top: 4rem">
+            <div
+              class="hero-device"
+              style="position: relative; display: inline-block"
+            >
+              <div class="orbit orbit-1"><div class="orbit-dot"></div></div>
+              <div class="orbit orbit-2"><div class="orbit-dot"></div></div>
+              <div class="device-inner">🌊</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <div class="stats-bar">
+        <div class="stats-inner">
+          <div class="stat-item">
+            <span class="stat-num">98.7%</span>
+            <div class="stat-label">SOS Signal Success Rate</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">&lt;30s</span>
+            <div class="stat-label">Emergency Alert Time</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">IP68</span>
+            <div class="stat-label">Waterproof Rating</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">72hr</span>
+            <div class="stat-label">Battery Life</div>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">50m</span>
+            <div class="stat-label">Dive Depth Rated</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHAT IS NAJDA -->
+      <section>
+        <div
+          class="section-inner two-col-grid"
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+          "
+        >
+          <div>
+            <div class="section-tag">What is NAJDA</div>
+            <h2 class="section-title">
+              When Every Second<br /><span>Counts At Sea</span>
+            </h2>
+            <p class="section-desc">
+              NAJDA — meaning "rescue" in Arabic — was built for a single
+              purpose: to ensure that no one at sea is ever truly alone in a
+              crisis. Our wearable devices combine satellite communication,
+              biometric monitoring, and emergency automation into products you
+              wear comfortably, all day, every day.
+            </p>
+            <div
+              style="
+                margin-top: 2rem;
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+              "
+            >
+              <button class="btn-primary" onclick="showPage('about')">
+                Our Story →
+              </button>
+              <button class="btn-outline" onclick="showPage('products')">
+                See Products
+              </button>
+            </div>
+          </div>
+          <div class="mini-cards-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div
+              style="
+                background: var(--card-bg);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.75rem;
+              "
+            >
+              <div style="font-size: 2rem; margin-bottom: 0.75rem">🛰️</div>
+              <h4
+                style="
+                  font-size: 0.95rem;
+                  font-weight: 700;
+                  margin-bottom: 0.5rem;
+                  color: var(--white);
+                "
+              >
+                Satellite Connected
+              </h4>
+              <p
+                style="
+                  font-size: 0.82rem;
+                  color: var(--muted);
+                  line-height: 1.6;
+                "
+              >
+                Works where mobile networks fail — open ocean included.
+              </p>
+            </div>
+            <div
+              style="
+                background: var(--card-bg);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.75rem;
+              "
+            >
+              <div style="font-size: 2rem; margin-bottom: 0.75rem">❤️</div>
+              <h4
+                style="
+                  font-size: 0.95rem;
+                  font-weight: 700;
+                  margin-bottom: 0.5rem;
+                  color: var(--white);
+                "
+              >
+                Vital Monitoring
+              </h4>
+              <p
+                style="
+                  font-size: 0.82rem;
+                  color: var(--muted);
+                  line-height: 1.6;
+                "
+              >
+                Continuous heart rate, SpO2, and stress tracking.
+              </p>
+            </div>
+            <div
+              style="
+                background: var(--card-bg);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.75rem;
+              "
+            >
+              <div style="font-size: 2rem; margin-bottom: 0.75rem">🆘</div>
+              <h4
+                style="
+                  font-size: 0.95rem;
+                  font-weight: 700;
+                  margin-bottom: 0.5rem;
+                  color: var(--white);
+                "
+              >
+                Auto SOS
+              </h4>
+              <p
+                style="
+                  font-size: 0.82rem;
+                  color: var(--muted);
+                  line-height: 1.6;
+                "
+              >
+                Detects distress events and triggers rescue alerts
+                automatically.
+              </p>
+            </div>
+            <div
+              style="
+                background: var(--card-bg);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                padding: 1.75rem;
+              "
+            >
+              <div style="font-size: 2rem; margin-bottom: 0.75rem">📍</div>
+              <h4
+                style="
+                  font-size: 0.95rem;
+                  font-weight: 700;
+                  margin-bottom: 0.5rem;
+                  color: var(--white);
+                "
+              >
+                Precision GPS
+              </h4>
+              <p
+                style="
+                  font-size: 0.82rem;
+                  color: var(--muted);
+                  line-height: 1.6;
+                "
+              >
+                Real-time location sharing with rescue teams and loved ones.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section style="padding-top: 0">
+        <div class="section-inner">
+          <div
+            style="text-align: center; max-width: 600px; margin: 0 auto 1rem"
+          >
+            <div class="section-tag">Core Technology</div>
+            <h2 class="section-title">
+              Built for the Harshest<br /><span>Conditions on Earth</span>
+            </h2>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">📡</div>
+              <h3>Real-Time GPS Tracking</h3>
+              <p>
+                Sub-3-meter GPS accuracy with live position sharing to your
+                emergency contacts, fleet manager, or rescue coordination
+                center.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🛰️</div>
+              <h3>Satellite Communication</h3>
+              <p>
+                Two-way satellite messaging works on open ocean, remote
+                coastlines, and anywhere mobile coverage cannot reach.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🆘</div>
+              <h3>SOS Emergency Trigger</h3>
+              <p>
+                One-touch manual SOS plus automatic distress detection sends
+                your location and biometrics to emergency services instantly.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">❤️</div>
+              <h3>Vital Signs Monitoring</h3>
+              <p>
+                Continuous heart rate, blood oxygen (SpO2), body temperature,
+                and fatigue indicators tracked and logged around the clock.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">💧</div>
+              <h3>IP68 Waterproof</h3>
+              <p>
+                Rated for continuous submersion up to 50 meters. Designed for
+                open-water swimmers, divers, and offshore crew in all weather.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔋</div>
+              <h3>72-Hour Battery Life</h3>
+              <p>
+                Long-duration battery with low-power standby mode — runs a full
+                offshore voyage without charging.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCTS PREVIEW -->
+      <section style="padding-top: 0">
+        <div class="section-inner">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              margin-bottom: 3rem;
+              flex-wrap: wrap;
+              gap: 1rem;
+            "
+          >
+            <div>
+              <div class="section-tag">Our Products</div>
+              <h2 class="section-title" style="margin-bottom: 0.5rem">
+                Safety Devices<br /><span>That Wear Beautifully</span>
+              </h2>
+            </div>
+            <button class="btn-outline" onclick="showPage('products')">
+              View All Products
+            </button>
+          </div>
+          <div class="products-grid" id="home-products"></div>
+        </div>
+      </section>
+
+      <!-- TRUST -->
+      <section class="trust-section">
+        <div class="section-inner">
+          <div
+            style="text-align: center; max-width: 560px; margin: 0 auto 1rem"
+          >
+            <div class="section-tag">Why NAJDA</div>
+            <h2 class="section-title">
+              Built on <span>Trust and Precision</span>
+            </h2>
+          </div>
+          <div class="trust-grid">
+            <div class="trust-item">
+              <div class="trust-icon">🏅</div>
+              <div>
+                <h4>Marine-Grade Certified</h4>
+                <p>
+                  Every device meets international maritime safety standards and
+                  is tested in real ocean conditions.
+                </p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">🔒</div>
+              <div>
+                <h4>Encrypted Data</h4>
+                <p>
+                  All location and health data is end-to-end encrypted. Your
+                  information stays private and secure.
+                </p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">🌍</div>
+              <div>
+                <h4>Global Coverage</h4>
+                <p>
+                  Satellite partnerships provide coverage in over 160 countries
+                  and all major ocean shipping routes.
+                </p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">🔧</div>
+              <div>
+                <h4>Lifetime Support</h4>
+                <p>
+                  Dedicated maritime safety experts available 24/7 for setup,
+                  troubleshooting, and emergency coordination.
+                </p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">⚡</div>
+              <div>
+                <h4>Fail-Safe Design</h4>
+                <p>
+                  Redundant systems ensure alerts fire even if one component
+                  fails — because failure is not an option at sea.
+                </p>
+              </div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-icon">🎓</div>
+              <div>
+                <h4>Expert-Designed</h4>
+                <p>
+                  Developed with maritime rescue services, naval safety
+                  engineers, and ocean athletes worldwide.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section>
+        <div class="section-inner">
+          <div
+            style="text-align: center; max-width: 560px; margin: 0 auto 1rem"
+          >
+            <div class="section-tag">Early Feedback</div>
+            <h2 class="section-title">
+              What Testers<br /><span>Are Saying</span>
+            </h2>
+          </div>
+          <div class="testimonials">
+            <div class="testimonial">
+              <div class="stars">★★★★★</div>
+              <q
+                >The SOS trigger fired within 20 seconds of simulated distress.
+                That kind of reliability is exactly what ocean racing crews
+                need. I'd wear this on every leg.</q
+              >
+              <div class="testimonial-author">
+                <div class="t-avatar">KM</div>
+                <div>
+                  <div class="t-name">Karim Mansour</div>
+                  <div class="t-role">
+                    Offshore Racing Sailor, Red Sea Circuit
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial">
+              <div class="stars">★★★★★</div>
+              <q
+                >As a coast guard coordinator, what impressed me most was the
+                vital signs data arriving alongside the GPS fix. We knew his
+                condition before we reached him.</q
+              >
+              <div class="testimonial-author">
+                <div class="t-avatar">SB</div>
+                <div>
+                  <div class="t-name">Sara Benali</div>
+                  <div class="t-role">Maritime Rescue Coordinator</div>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial">
+              <div class="stars">★★★★★</div>
+              <q
+                >72 hours of battery is real — I tested it on a 3-day dive
+                expedition. It never missed a beat. The bracelet is light enough
+                to forget you're wearing it.</q
+              >
+              <div class="testimonial-author">
+                <div class="t-avatar">DP</div>
+                <div>
+                  <div class="t-name">Dina Petrova</div>
+                  <div class="t-role">Technical Dive Instructor, Sinai</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section">
+        <div class="section-inner">
+          <div class="section-tag" style="text-align: center">
+            Limited Preorders Open
+          </div>
+          <h2
+            class="section-title"
+            style="text-align: center; font-size: clamp(1.8rem, 4vw, 3rem)"
+          >
+            Be Among the First<br /><span>to Own NAJDA</span>
+          </h2>
+          <p
+            style="
+              text-align: center;
+              color: var(--text-body);
+              max-width: 500px;
+              margin: 1rem auto 2.5rem;
+              font-weight: 300;
+            "
+          >
+            Products are currently in final manufacturing. Reserve your device
+            today and receive priority shipping, early adopter pricing, and
+            lifetime warranty coverage.
+          </p>
+          <div
+            style="
+              display: flex;
+              gap: 1rem;
+              justify-content: center;
+              flex-wrap: wrap;
+            "
+          >
+            <button class="btn-primary" onclick="showPage('preorder')">
+              Place Your Preorder →
+            </button>
+            <button class="btn-outline" onclick="showPage('contact')">
+              Ask a Question
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <a class="nav-logo" onclick="showPage('home')"
+                >NAJ<span>DA</span></a
+              >
+              <p style="margin-top: 1rem">
+                Smart maritime wearables that protect lives at sea. GPS
+                tracking, vital monitoring, and instant emergency response —
+                worn comfortably, trusted absolutely.
+              </p>
+              <div class="footer-socials">
+                <a class="social-link" title="LinkedIn">in</a>
+                <a class="social-link" title="Twitter">𝕏</a>
+                <a class="social-link" title="Instagram">ig</a>
+                <a class="social-link" title="YouTube">▶</a>
+              </div>
+              <div style="margin-top: 1.5rem">
+                <div
+                  style="
+                    font-size: 0.82rem;
+                    color: var(--muted);
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Stay informed about launch dates:
+                </div>
+                <div class="newsletter-wrap">
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    id="newsletter-email"
+                  />
+                  <button onclick="subscribeNewsletter()">Notify Me</button>
+                </div>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Products</h4>
+              <ul>
+                <li>
+                  <a onclick="showProductDetail('bracelet')"
+                    >NAJDA Smart Bracelet</a
+                  >
+                </li>
+                <li>
+                  <a onclick="showProductDetail('jacket')"
+                    >NAJDA Smart Life Jacket</a
+                  >
+                </li>
+                <li><a onclick="showPage('preorder')">Preorder Now</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Company</h4>
+              <ul>
+                <li><a onclick="showPage('about')">About NAJDA</a></li>
+                <li><a onclick="showPage('contact')">Contact Us</a></li>
+                <li><a onclick="showPage('home')">Press Kit</a></li>
+                <li><a onclick="showPage('home')">Careers</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Support</h4>
+              <ul>
+                <li><a onclick="showPage('contact')">Help Center</a></li>
+                <li><a onclick="showPage('products')">Product FAQs</a></li>
+                <li><a onclick="showPage('home')">Shipping Info</a></li>
+                <li><a onclick="showPage('home')">Returns Policy</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <p>© 2025 NAJDA Maritime Safety. All rights reserved.</p>
+            <div style="display: flex; gap: 2rem">
+              <a style="font-size: 0.8rem; color: var(--muted); cursor: pointer"
+                >Privacy Policy</a
+              ><a
+                style="font-size: 0.8rem; color: var(--muted); cursor: pointer"
+                >Terms of Service</a
+              >
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ======================== PRODUCTS PAGE ======================== -->
+    <div id="page-products" class="page">
+      <section
+        style="
+          padding: 5rem 2rem 3rem;
+          background: radial-gradient(
+            ellipse at top,
+            rgba(0, 180, 216, 0.07),
+            transparent 50%
+          );
+        "
+      >
+        <div class="section-inner">
+          <div class="section-tag">Our Products</div>
+          <h1 class="section-title" style="font-size: clamp(2rem, 5vw, 3.5rem)">
+            Maritime Safety<br /><span>Wearable Devices</span>
+          </h1>
+          <p class="section-desc">
+            Each NAJDA device is engineered for reliability in the most
+            demanding water environments on earth — from offshore racing to
+            deep-water diving.
+          </p>
+        </div>
+      </section>
+      <section style="padding: 3rem 2rem 6rem">
+        <div class="section-inner">
+          <div class="products-grid" id="all-products"></div>
+        </div>
+      </section>
+
+      <!-- CTA STRIP -->
+      <div
+        style="
+          background: var(--navy-mid);
+          border-top: 1px solid var(--border);
+          padding: 4rem 2rem;
+          text-align: center;
+        "
+      >
+        <h2
+          style="
+            font-family: &quot;Inter&quot;, sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+          "
+        >
+          Can't decide?
+          <span style="color: var(--teal)">Talk to our team.</span>
+        </h2>
+        <p style="color: var(--muted); margin-bottom: 2rem">
+          Our maritime safety advisors will help you choose the right NAJDA
+          device for your needs.
+        </p>
+        <button class="btn-primary" onclick="showPage('contact')">
+          Get Expert Advice →
+        </button>
+      </div>
+
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-bottom" style="border-top: none; padding-top: 0">
+            <p>© 2025 NAJDA Maritime Safety. All rights reserved.</p>
+            <button
+              class="btn-outline"
+              onclick="showPage('home')"
+              style="font-size: 0.82rem; padding: 0.5rem 1rem"
+            >
+              ← Back to Home
+            </button>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ======================== PRODUCT DETAIL PAGE ======================== -->
+    <div id="page-detail" class="page">
+      <div class="product-detail-hero">
+        <div style="max-width: 1100px; margin: 0 auto; padding: 2rem 0 0">
+          <button class="back-btn" onclick="showPage('products')">
+            ← Back to Products
+          </button>
+        </div>
+        <div class="detail-grid" id="detail-content">
+          <!-- injected -->
+        </div>
+      </div>
+
+      <!-- RELATED -->
+      <section>
+        <div class="section-inner">
+          <div class="section-tag">Also Available</div>
+          <h2 class="section-title" style="font-size: 1.8rem">
+            Related <span>Products</span>
+          </h2>
+          <div
+            class="products-grid"
+            style="margin-top: 2rem"
+            id="related-products"
+          ></div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-bottom" style="border-top: none; padding-top: 0">
+            <p>© 2025 NAJDA Maritime Safety.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ======================== PREORDER PAGE ======================== -->
+    <div id="page-preorder" class="page">
+      <div class="preorder-wrap">
+        <div class="preorder-header">
+          <div
+            class="section-tag"
+            style="justify-content: center; display: flex"
+          >
+            Reserve Your Device
+          </div>
+          <h1
+            style="
+              font-family: &quot;Inter&quot;, sans-serif;
+              font-size: clamp(2rem, 4vw, 2.8rem);
+              font-weight: 800;
+              margin-bottom: 0.75rem;
+              line-height: 1.1;
+            "
+          >
+            Place Your <span style="color: var(--teal)">Preorder</span>
+          </h1>
+          <p
+            style="
+              color: var(--text-body);
+              font-size: 1rem;
+              max-width: 480px;
+              margin: 0 auto;
+              line-height: 1.7;
+              font-weight: 300;
+            "
+          >
+            Secure your NAJDA device before the official launch. Priority
+            shipping, early-adopter pricing, and a lifetime warranty — all
+            reserved for you today.
+          </p>
+        </div>
+
+        <div class="stock-banner">
+          <div class="stock-dot"></div>
+          <div class="stock-text">
+            <strong>Currently Out of Stock</strong>
+            <p>
+              Products are in final production. Preorders are open — your spot
+              is guaranteed.
+            </p>
+          </div>
+        </div>
+        <div class="preorder-available">
+          ✓ Preorder Available — Expected Shipping: Q3 2025
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div class="success-state" id="preorder-success">
+          <div class="success-icon">✓</div>
+          <h2>Preorder Confirmed!</h2>
+          <p>
+            Thank you! Your preorder has been received and saved. You'll receive
+            a confirmation email shortly. Our team will contact you with
+            shipping updates as production is completed.
+          </p>
+          <p
+            style="font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem"
+          >
+            Reference:
+            <span
+              id="order-ref"
+              style="color: var(--teal); font-weight: 600"
+            ></span>
+          </p>
+          <div
+            style="
+              display: flex;
+              gap: 1rem;
+              justify-content: center;
+              margin-top: 2rem;
+              flex-wrap: wrap;
+            "
+          >
+            <button class="btn-primary" onclick="showPage('home')">
+              Back to Home
+            </button>
+            <button class="btn-outline" onclick="resetPreorderForm()">
+              Place Another Order
+            </button>
+          </div>
+        </div>
+
+        <!-- FORM -->
+        <form id="preorder-form" onsubmit="submitPreorder(event)" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name <span>*</span></label>
+              <input type="text" id="f-name" placeholder="Ahmed Al-Rashidi" />
+              <div class="field-error" id="err-name">
+                Please enter your full name.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address <span>*</span></label>
+              <input
+                type="email"
+                id="f-email"
+                placeholder="ahmed@example.com"
+              />
+              <div class="field-error" id="err-email">
+                Please enter a valid email address.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Phone Number <span>*</span></label>
+              <input type="tel" id="f-phone" placeholder="+20 100 000 0000" />
+              <div class="field-error" id="err-phone">
+                Please enter a valid phone number.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Country <span>*</span></label>
+              <select id="f-country">
+                <option value="">Select country...</option>
+                <option>Egypt</option>
+                <option>Saudi Arabia</option>
+                <option>UAE</option>
+                <option>Kuwait</option>
+                <option>Qatar</option>
+                <option>Bahrain</option>
+                <option>Oman</option>
+                <option>Jordan</option>
+                <option>Lebanon</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>Netherlands</option>
+                <option>Greece</option>
+                <option>Turkey</option>
+                <option>Other</option>
+              </select>
+              <div class="field-error" id="err-country">
+                Please select your country.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>City <span>*</span></label>
+              <input type="text" id="f-city" placeholder="Alexandria" />
+              <div class="field-error" id="err-city">
+                Please enter your city.
+              </div>
+            </div>
+            <div class="form-group">
+              <label
+                >Company / Organization
+                <small style="color: var(--muted)">(optional)</small></label
+              >
+              <input
+                type="text"
+                id="f-company"
+                placeholder="Maritime company name"
+              />
+            </div>
+            <div class="form-group full">
+              <label>Shipping Address <span>*</span></label>
+              <input
+                type="text"
+                id="f-address"
+                placeholder="Street, building, postal code"
+              />
+              <div class="field-error" id="err-address">
+                Please enter your shipping address.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Product <span>*</span></label>
+              <select id="f-product">
+                <option value="">Select product...</option>
+                <option value="bracelet">NAJDA Smart Bracelet</option>
+                <option value="jacket">NAJDA Smart Life Jacket</option>
+              </select>
+              <div class="field-error" id="err-product">
+                Please select a product.
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Quantity <span>*</span></label>
+              <div class="qty-wrap">
+                <button type="button" class="qty-btn" onclick="adjustQty(-1)">
+                  −
+                </button>
+                <div class="qty-display" id="qty-display">1</div>
+                <button type="button" class="qty-btn" onclick="adjustQty(1)">
+                  +
+                </button>
+                <input type="hidden" id="f-qty" value="1" />
+              </div>
+            </div>
+            <div class="form-group full">
+              <label
+                >Notes / Special Requests
+                <small style="color: var(--muted)">(optional)</small></label
+              >
+              <textarea
+                id="f-notes"
+                placeholder="Any customization, bulk order details, or specific requirements..."
+              ></textarea>
+            </div>
+          </div>
+          <div
+            style="
+              background: rgba(0, 180, 216, 0.05);
+              border: 1px solid var(--border);
+              border-radius: 10px;
+              padding: 1rem 1.25rem;
+              margin-top: 1.5rem;
+              font-size: 0.82rem;
+              color: var(--muted);
+              line-height: 1.65;
+            "
+          >
+            🔒 Your information is securely encrypted and will only be used to
+            process your preorder. We will never sell or share your data. By
+            submitting, you agree to our
+            <span style="color: var(--teal); cursor: pointer"
+              >Terms of Service</span
+            >
+            and
+            <span style="color: var(--teal); cursor: pointer"
+              >Privacy Policy</span
+            >.
+          </div>
+          <button type="submit" class="submit-btn" id="submit-btn">
+            <span id="submit-text">Confirm Preorder</span>
+            <span
+              id="submit-spinner"
+              style="display: none"
+              class="spinner"
+            ></span>
+          </button>
+        </form>
+      </div>
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-bottom" style="border-top: none; padding-top: 0">
+            <p>© 2025 NAJDA Maritime Safety. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ======================== ABOUT PAGE ======================== -->
+    <div id="page-about" class="page">
+      <section
+        style="
+          padding: 5rem 2rem 4rem;
+          background: radial-gradient(
+            ellipse at top,
+            rgba(0, 180, 216, 0.07),
+            transparent 50%
+          );
+        "
+      >
+        <div class="section-inner">
+          <div class="section-tag">Our Story</div>
+          <h1 class="section-title" style="font-size: clamp(2rem, 5vw, 3.5rem)">
+            We Build Safety That<br /><span>Never Comes Off</span>
+          </h1>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-inner">
+          <div class="about-story">
+            <div>
+              <div class="section-tag">Founded in Purpose</div>
+              <h2 class="section-title" style="font-size: 2rem">
+                Why NAJDA Exists
+              </h2>
+              <p
+                style="
+                  color: var(--text-body);
+                  line-height: 1.75;
+                  margin-bottom: 1.5rem;
+                  font-weight: 300;
+                "
+              >
+                The name NAJDA comes from the Arabic word for rescue — and
+                that's exactly what we set out to build: a product that rescues
+                people when it matters most. Our founders witnessed first-hand
+                how inadequate traditional safety equipment was in real maritime
+                emergencies. Flares that failed. Life rings thrown in the wrong
+                direction. No way to share a live position with rescue services.
+              </p>
+              <p
+                style="
+                  color: var(--text-body);
+                  line-height: 1.75;
+                  margin-bottom: 1.5rem;
+                  font-weight: 300;
+                "
+              >
+                We spent three years consulting with coast guard services,
+                offshore sailors, dive instructors, and naval engineers. The
+                result is NAJDA — a family of wearable devices that don't just
+                protect, but actively communicate, monitor, and respond.
+              </p>
+              <p
+                style="
+                  color: var(--text-body);
+                  line-height: 1.75;
+                  font-weight: 300;
+                "
+              >
+                We are a maritime-first company. That means every design
+                decision, every component choice, every test protocol is driven
+                by one question: will this keep someone alive at sea?
+              </p>
+            </div>
+            <div class="about-visual">🌊</div>
+          </div>
+
+          <!-- VALUES -->
+          <div class="section-tag">Our Values</div>
+          <h2 class="section-title" style="font-size: 2rem">
+            What We Stand For
+          </h2>
+          <div class="values-grid">
+            <div class="value-card">
+              <h3>Reliability Above All</h3>
+              <p>
+                A safety device that fails in an emergency is worse than none.
+                We test every component to extremes before it gets near water.
+              </p>
+            </div>
+            <div class="value-card">
+              <h3>Human-Centered Design</h3>
+              <p>
+                A device nobody wears protects nobody. Comfort, wearability, and
+                intuitive controls are non-negotiable requirements.
+              </p>
+            </div>
+            <div class="value-card">
+              <h3>Radical Transparency</h3>
+              <p>
+                We publish our test data, our failure rates, and our limitations
+                openly. Trust is built through honesty, not marketing.
+              </p>
+            </div>
+            <div class="value-card">
+              <h3>Accessible Safety</h3>
+              <p>
+                Life-saving technology should not be luxury-priced. We work hard
+                to keep NAJDA devices affordable for working mariners worldwide.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="cta-section">
+        <div class="section-inner">
+          <h2 class="section-title" style="text-align: center; font-size: 2rem">
+            Believe in what we're building?<br /><span
+              >Join us from the start.</span
+            >
+          </h2>
+          <div
+            style="
+              display: flex;
+              gap: 1rem;
+              justify-content: center;
+              flex-wrap: wrap;
+              margin-top: 2rem;
+            "
+          >
+            <button class="btn-primary" onclick="showPage('preorder')">
+              Preorder Now →
+            </button>
+            <button class="btn-outline" onclick="showPage('contact')">
+              Get in Touch
+            </button>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-bottom" style="border-top: none; padding-top: 0">
+            <p>© 2025 NAJDA Maritime Safety.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ======================== CONTACT PAGE ======================== -->
+    <div id="page-contact" class="page">
+      <section
+        style="
+          padding: 5rem 2rem 4rem;
+          background: radial-gradient(
+            ellipse at top,
+            rgba(0, 180, 216, 0.07),
+            transparent 50%
+          );
+        "
+      >
+        <div class="section-inner">
+          <div class="section-tag">Contact Us</div>
+          <h1 class="section-title" style="font-size: clamp(2rem, 5vw, 3rem)">
+            We're Here<br /><span>When You Need Us</span>
+          </h1>
+          <p class="section-desc">
+            Have a question about our products, a bulk order inquiry, or
+            partnership proposal? Our team responds within 24 hours.
+          </p>
+        </div>
+      </section>
+      <section style="padding: 3rem 2rem 6rem">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="c-icon">📧</div>
+              <div>
+                <div class="c-label">Email</div>
+                <div class="c-val"><a href="mailto:contact.najda@gmail.com">contact.najda@gmail.com</a></div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="c-icon">📞</div>
+              <div>
+                <div class="c-label">Phone</div>
+                <div class="c-val">+201032315689</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="c-icon">📍</div>
+              <div>
+                <div class="c-label">Headquarters</div>
+                <div class="c-val">
+                  Alexandria, Egypt<br /><span
+                    style="font-size: 0.82rem; color: var(--muted)"
+                    >Port Said Maritime Innovation Hub</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="c-icon">🕐</div>
+              <div>
+                <div class="c-label">Response Time</div>
+                <div class="c-val">Within 24 hours</div>
+              </div>
+            </div>
+
+            <div
+              style="
+                background: rgba(0, 180, 216, 0.06);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin-top: 1rem;
+              "
+            >
+              <h4
+                style="
+                  font-size: 0.95rem;
+                  font-weight: 700;
+                  margin-bottom: 1rem;
+                  color: var(--white);
+                "
+              >
+                Frequently Asked Questions
+              </h4>
+              <div class="faq-list" id="contact-faq">
+                <div class="faq-item">
+                  <div class="faq-q" onclick="toggleFaq(this)">
+                    When will devices ship?<span>+</span>
+                  </div>
+                  <div class="faq-a">
+                    We are targeting Q3 2025 for first-batch preorder shipments.
+                    You'll receive regular updates via email from the moment
+                    your preorder is placed.
+                  </div>
+                </div>
+                <div class="faq-item">
+                  <div class="faq-q" onclick="toggleFaq(this)">
+                    Do you offer bulk or fleet pricing?<span>+</span>
+                  </div>
+                  <div class="faq-a">
+                    Yes. For orders of 10+ units (maritime companies, dive
+                    schools, fishing fleets), we offer customized fleet pricing
+                    and management dashboards. Contact us directly.
+                  </div>
+                </div>
+                <div class="faq-item">
+                  <div class="faq-q" onclick="toggleFaq(this)">
+                    Can I cancel my preorder?<span>+</span>
+                  </div>
+                  <div class="faq-a">
+                    Preorders can be cancelled or modified up to 30 days before
+                    your confirmed ship date. Full refunds are processed within
+                    5–7 business days.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-wrap">
+            <h3
+              style="
+                font-family: &quot;Inter&quot;, sans-serif;
+                font-weight: 700;
+                font-size: 1.3rem;
+                margin-bottom: 1.75rem;
+                color: var(--white);
+              "
+            >
+              Send us a Message
+            </h3>
+            <div
+              id="contact-success"
+              style="display: none; text-align: center; padding: 2rem"
+            >
+              <div style="font-size: 3rem; margin-bottom: 1rem">✓</div>
+              <h4
+                style="
+                  color: var(--success);
+                  font-family: &quot;Inter&quot;, sans-serif;
+                  font-size: 1.2rem;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                Message Sent!
+              </h4>
+              <p style="color: var(--muted); font-size: 0.9rem">
+                We'll get back to you within 24 hours.
+              </p>
+            </div>
+            <form id="contact-form" onsubmit="submitContact(event)" novalidate>
+              <div style="display: flex; flex-direction: column; gap: 1.25rem">
+                <div class="form-group">
+                  <label>Your Name <span>*</span></label>
+                  <input type="text" id="c-name" placeholder="Full name" />
+                  <div class="field-error" id="cerr-name">
+                    Please enter your name.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Email <span>*</span></label>
+                  <input
+                    type="email"
+                    id="c-email"
+                    placeholder="your@email.com"
+                  />
+                  <div class="field-error" id="cerr-email">
+                    Please enter a valid email.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Subject <span>*</span></label>
+                  <select id="c-subject">
+                    <option value="">Select subject...</option>
+                    <option>Preorder Inquiry</option>
+                    <option>Product Question</option>
+                    <option>Bulk / Fleet Order</option>
+                    <option>Partnership</option>
+                    <option>Press / Media</option>
+                    <option>Other</option>
+                  </select>
+                  <div class="field-error" id="cerr-subject">
+                    Please select a subject.
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Message <span>*</span></label>
+                  <textarea
+                    id="c-msg"
+                    placeholder="Tell us how we can help..."
+                    style="min-height: 130px"
+                  ></textarea>
+                  <div class="field-error" id="cerr-msg">
+                    Please enter your message.
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  class="submit-btn"
+                  id="contact-submit-btn"
+                >
+                  <span id="contact-submit-text">Send Message</span>
+                  <span
+                    id="contact-submit-spinner"
+                    style="display: none"
+                    class="spinner"
+                  ></span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-bottom" style="border-top: none; padding-top: 0">
+            <p>© 2025 NAJDA Maritime Safety.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ======================== ADMIN PAGE ======================== -->
+    <div id="page-admin" class="page">
+      <div class="admin-wrap">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+          "
+        >
+          <div>
+            <div class="section-tag">Internal Dashboard</div>
+            <h1
+              style="
+                font-family: &quot;Inter&quot;, sans-serif;
+                font-size: 2rem;
+                font-weight: 800;
+                color: var(--white);
+              "
+            >
+              Preorder Management
+            </h1>
+          </div>
+          <button class="export-btn" onclick="exportCSV()">⬇ Export CSV</button>
+        </div>
+
+        <div class="admin-stats" id="admin-stats"></div>
+
+        <div class="admin-controls">
+          <input
+            type="text"
+            id="admin-search"
+            placeholder="Search by name, email, product..."
+            oninput="filterOrders()"
+            style="flex: 1; min-width: 200px"
+          />
+          <button
+            class="admin-filter-btn active"
+            onclick="setFilter('all', this)"
+          >
+            All
+          </button>
+          <button
+            class="admin-filter-btn"
+            onclick="setFilter('bracelet', this)"
+          >
+            Smart Bracelet
+          </button>
+          <button class="admin-filter-btn" onclick="setFilter('jacket', this)">
+            Life Jacket
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Country</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+          <div class="no-orders" id="no-orders" style="display: none">
+            No preorders found.
+          </div>
+        </div>
+
+        <!-- DETAIL MODAL AREA -->
+        <div
+          id="order-detail-panel"
+          style="
+            display: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 1.5rem;
+            "
+          >
+            <h3
+              style="
+                font-family: &quot;Inter&quot;, sans-serif;
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--white);
+              "
+            >
+              Order Details
+            </h3>
+            <button
+              onclick="
+                document.getElementById('order-detail-panel').style.display =
+                  'none'
+              "
+              style="
+                background: none;
+                border: none;
+                color: var(--muted);
+                cursor: pointer;
+                font-size: 1.25rem;
+              "
+            >
+              ×
+            </button>
+          </div>
+          <div id="order-detail-content"></div>
+        </div>
+      </div>
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-bottom" style="border-top: none; padding-top: 0">
+            <p>© 2025 NAJDA Maritime Safety — Internal Dashboard</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+      // ================== DATABASE (localStorage simulation) ==================
+      const SUPABASE_URL = "https://angwwrzcytelwlfuoyno.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFuZ3d3cnpjeXRlbHdsZnVveW5vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzODg0MDgsImV4cCI6MjA5MDk2NDQwOH0.bKK7qsoxFMdivM_5t4XZ08HVgeDYLdxUVNki4J650UA";
+
+      const DB = {
+        async saveOrder(order) {
+          // 1. Save customer
+          const custRes = await fetch(`${SUPABASE_URL}/rest/v1/customers`, {
+            method: "POST",
+            headers: {
+              apikey: SUPABASE_KEY,
+              Authorization: `Bearer ${SUPABASE_KEY}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              full_name: order.customer.name,
+              email: order.customer.email,
+              phone: order.customer.phone,
+              country: order.customer.country,
+              city: order.customer.city,
+              shipping_address: order.customer.address,
+              company_name: order.customer.company || null,
+            }),
+          });
+
+          const custData = await custRes.json();
+          console.log("Customer response:", custData); // debug line
+
+          if (!custRes.ok || !custData || !custData[0]) {
+            throw new Error(
+              "Failed to save customer: " + JSON.stringify(custData),
+            );
+          }
+          const customerId = custData[0].id;
+
+          // 2. Look up product by slug
+          const prodRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/products?slug=eq.${order.product}&select=id`,
+            {
+              headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: `Bearer ${SUPABASE_KEY}`,
+              },
+            },
+          );
+          const prodData = await prodRes.json();
+          console.log("Product response:", prodData); // debug line
+
+          if (!prodData || !prodData[0]) {
+            throw new Error(
+              "Product not found in database. Did you seed the products table?",
+            );
+          }
+          const productId = prodData[0].id;
+
+          // 3. Save preorder
+          const preorderRes = await fetch(`${SUPABASE_URL}/rest/v1/preorders`, {
+            method: "POST",
+            headers: {
+              apikey: SUPABASE_KEY,
+              Authorization: `Bearer ${SUPABASE_KEY}`,
+              "Content-Type": "application/json",
+              Prefer: "return=representation",
+            },
+            body: JSON.stringify({
+              customer_id: customerId,
+              product_id: productId,
+              quantity: order.quantity,
+              notes: order.notes || null,
+              status: "preorder_received",
+              stock_status_snapshot: "out_of_stock",
+              ref_code: order.ref,
+            }),
+          });
+
+          const preorderData = await preorderRes.json();
+          console.log("Preorder response:", preorderData); // debug line
+
+          if (!preorderRes.ok) {
+            throw new Error(
+              "Failed to save preorder: " + JSON.stringify(preorderData),
+            );
+          }
+
+          return preorderData[0];
+        },
+
+        async getOrders() {
+          const data = await fetch(
+            `${SUPABASE_URL}/rest/v1/preorders?select=*,customers(*),products(name,slug)&order=created_at.desc`,
+            {
+              headers: {
+                apikey: SUPABASE_KEY,
+                Authorization: `Bearer ${SUPABASE_KEY}`,
+              },
+            },
+          ).then((r) => r.json());
+
+          // Remap to match the existing shape the admin UI expects
+          return data.map((o) => ({
+            id: o.id,
+            ref: o.ref_code,
+            customer: {
+              name: o.customers?.full_name,
+              email: o.customers?.email,
+              phone: o.customers?.phone,
+              country: o.customers?.country,
+              city: o.customers?.city,
+              address: o.customers?.shipping_address,
+              company: o.customers?.company_name,
+            },
+            product: o.products?.slug,
+            productName: o.products?.name,
+            quantity: o.quantity,
+            notes: o.notes,
+            status: o.status,
+            stockStatusSnapshot: o.stock_status_snapshot,
+            createdAt: o.created_at,
+          }));
+        },
+      };
+
+      // ================== PRODUCT DATA ==================
+      const PRODUCTS = [
+        {
+          id: "bracelet",
+          name: "NAJDA Smart Bracelet",
+          emoji: "⌚",
+          shortDesc:
+            "The most advanced wearable maritime safety device ever made. Worn like a watch, trusted like a lifeline.",
+          fullDesc:
+            "The NAJDA Smart Bracelet is the culmination of three years of research with maritime rescue services, deep-sea divers, and offshore professionals. It fits comfortably on your wrist — indistinguishable from a high-end sports watch — but packs military-grade GPS tracking, two-way satellite communication, and medical-grade biometric monitoring into a 42mm waterproof case.",
+          features: [
+            "GPS tracking (sub-3m accuracy)",
+            "Two-way satellite communication",
+            "One-touch SOS emergency trigger",
+            "Heart rate monitoring (24/7)",
+            "SpO2 blood oxygen monitoring",
+            "IP68 waterproof (50m rated)",
+            "72-hour battery life",
+            "Emergency LED beacon",
+          ],
+          specs: [
+            { l: "Weight", v: "58g" },
+            { l: "Battery", v: "72 hours" },
+            { l: "Water Rating", v: "IP68 / 50m" },
+            { l: "GPS Accuracy", v: "Sub-3 meters" },
+            { l: "Satellite Network", v: "Iridium / Starlink" },
+            { l: "Display", v: '1.4" AMOLED' },
+            { l: "Connectivity", v: "BLE 5.3 + Satellite" },
+            { l: "SOS Response", v: "< 30 seconds" },
+          ],
+          price: "From $200",
+          useCases: [
+            "Offshore sailors and racing crew",
+            "Open-water swimmers and triathletes",
+            "Maritime workers and fishing crews",
+            "Recreational boaters and kayakers",
+            "Dive instructors and technical divers",
+          ],
+          faqs: [
+            {
+              q: "How waterproof is the bracelet?",
+              a: "Rated IP68 and tested to 50 meters continuous submersion. Suitable for diving, swimming, and all maritime conditions.",
+            },
+            {
+              q: "Does GPS work offshore?",
+              a: "Yes. The bracelet uses both cellular GPS and satellite-based positioning via our Iridium/Starlink integration — works anywhere on earth.",
+            },
+            {
+              q: "How does the SOS trigger work?",
+              a: "Press and hold the SOS button for 3 seconds. It broadcasts your GPS position, vitals, and emergency alert to rescue services and your registered contacts simultaneously.",
+            },
+          ],
+        },
+        {
+          id: "jacket",
+          name: "NAJDA Smart Life Jacket",
+          emoji: "🦺",
+          shortDesc:
+            "A certified life jacket reinvented with intelligent sensors, GPS tracking, and active rescue coordination technology.",
+          fullDesc:
+            "The NAJDA Smart Life Jacket takes the most fundamental piece of maritime safety equipment and adds a layer of intelligence that changes everything. When you go in the water — intentionally or not — the jacket works for you: auto-deploying, broadcasting your position, monitoring your condition, and actively coordinating with rescue services so help reaches you faster.",
+          features: [
+            "Auto-inflation on water contact",
+            "GPS location broadcasting",
+            "Vital signs monitoring",
+            "Night vision LED strips (360°)",
+            "Integrated heating elements",
+            "Rescue coordination uplink",
+            "Water entry detection",
+            "72-hour emergency beacon",
+          ],
+          specs: [
+            { l: "Buoyancy", v: "275N ISO 12402-2" },
+            { l: "Auto-inflation", v: "< 5 seconds" },
+            { l: "GPS Beacon", v: "Active on water contact" },
+            { l: "LED Visibility", v: "360° / 2 nautical miles" },
+            { l: "Battery", v: "7 days standby" },
+            { l: "Heating Range", v: "+8°C body temp hold" },
+            { l: "Satellite", v: "Automatic on activation" },
+            { l: "Certification", v: "ISO 12402 Class A" },
+          ],
+          price: "From $200",
+          useCases: [
+            "Commercial maritime crew",
+            "Offshore wind farm workers",
+            "Coast guard and rescue services",
+            "Deep-sea fishing fleets",
+            "Military and naval personnel",
+          ],
+          faqs: [
+            {
+              q: "Is it a certified life jacket?",
+              a: "Yes. The NAJDA Smart Life Jacket meets ISO 12402 Class A certification (275N buoyancy) — the highest standard for offshore survival.",
+            },
+            {
+              q: "Does the heating actually work?",
+              a: "The integrated heating elements maintain core temperature in water down to 5°C — significantly extending survival time in cold water emergencies.",
+            },
+            {
+              q: "Can rescue services see me?",
+              a: "Yes. On water activation, the jacket immediately transmits your GPS position and vital signs to maritime rescue coordination centers and your vessel's bridge.",
+            },
+          ],
+        },
+      ];
+
+      function getProduct(id) {
+        return PRODUCTS.find((p) => p.id === id);
+      }
+
+      // ================== NAVIGATION ==================
+      let currentPage = "home";
+      function showPage(id) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById("page-" + id).classList.add("active");
+        currentPage = id;
+        window.scrollTo(0, 0);
+        if (id === "products") renderProducts("all-products", PRODUCTS);
+        if (id === "home") renderProducts("home-products", PRODUCTS);
+        if (id === "admin") renderAdmin();
+      }
+      function showProductDetail(productId, backPage) {
+        const p = getProduct(productId);
+        if (!p) return;
+        const detail = document.getElementById("detail-content");
+        detail.innerHTML = `
+    <div class="detail-img-wrap"><div style="font-size:7rem;position:relative;z-index:1">${p.emoji}</div></div>
+    <div>
+      <div class="detail-badge">● Out of Stock</div>
+      <h1 class="detail-title">${p.name}</h1>
+      <p class="detail-desc">${p.fullDesc}</p>
+      <h3 style="font-size:.9rem;font-weight:700;color:var(--teal);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem">Key Features</h3>
+      <ul class="product-features" style="margin-bottom:2rem">${p.features.map((f) => `<li>${f}</li>`).join("")}</ul>
+      <h3 style="font-size:.9rem;font-weight:700;color:var(--teal);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem">Technical Specs</h3>
+      <div class="spec-grid">${p.specs.map((s) => `<div class="spec-item"><div class="spec-label">${s.l}</div><div class="spec-val">${s.v}</div></div>`).join("")}</div>
+      <div class="detail-price">${p.price} <span style="font-size:.85rem;color:var(--muted);font-weight:400;font-family:'Plus Jakarta Sans',sans-serif">— Final pricing at launch</span></div>
+      <div class="detail-btns">
+        <button class="btn-primary" onclick="preorderProduct('${p.id}')">Preorder This Device →</button>
+        <button class="btn-outline" onclick="showPage('contact')">Ask a Question</button>
+      </div>
+      <div style="margin-top:2rem">
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--teal);letter-spacing:1px;text-transform:uppercase;margin-bottom:1rem">Who It's For</h3>
+        <ul class="product-features">${p.useCases.map((u) => `<li>${u}</li>`).join("")}</ul>
+      </div>
+      <div style="margin-top:2.5rem">
+        <h3 style="font-size:1rem;font-weight:700;color:var(--white);margin-bottom:1rem">Frequently Asked Questions</h3>
+        <div class="faq-list">${p.faqs.map((f) => `<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">${f.q}<span>+</span></div><div class="faq-a">${f.a}</div></div>`).join("")}</div>
+      </div>
+    </div>`;
+        const related = document.getElementById("related-products");
+        const others = PRODUCTS.filter((op) => op.id !== productId);
+        renderProducts("related-products", others);
+        showPage("detail");
+      }
+      function preorderProduct(productId) {
+        showPage("preorder");
+        setTimeout(() => {
+          const sel = document.getElementById("f-product");
+          if (sel) sel.value = productId;
+        }, 100);
+      }
+      function toggleMenu() {
+        document.getElementById("mobileMenu").classList.toggle("open");
+      }
+
+      // ================== RENDER PRODUCTS ==================
+      function renderProducts(containerId, products) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        el.innerHTML = products
+          .map(
+            (p) => `
+    <div class="product-card">
+      <div class="product-img">${p.emoji}<div class="product-badge">Out of Stock</div></div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.shortDesc}</div>
+        <ul class="product-features">${p.features
+          .slice(0, 4)
+          .map((f) => `<li>${f}</li>`)
+          .join("")}</ul>
+        <div class="product-price">${p.price} <span>— Final price at launch</span></div>
+        <div class="product-btns">
+          <button class="btn-sm btn-teal" onclick="preorderProduct('${p.id}')">Preorder</button>
+          <button class="btn-sm btn-ghost" onclick="showProductDetail('${p.id}')">View Details</button>
+        </div>
+      </div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      // ================== PREORDER FORM ==================
+      let qty = 1;
+      function adjustQty(d) {
+        qty = Math.max(1, Math.min(99, qty + d));
+        document.getElementById("qty-display").textContent = qty;
+        document.getElementById("f-qty").value = qty;
+      }
+      function validateField(id, errId, check) {
+        const el = document.getElementById(id);
+        const err = document.getElementById(errId);
+        const valid = check(el.value);
+        el.classList.toggle("error", !valid);
+        err.classList.toggle("show", !valid);
+        return valid;
+      }
+      function isEmail(v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      }
+      function isPhone(v) {
+        return v.replace(/[\s\-\+\(\)]/g, "").length >= 7;
+      }
+
+      async function submitPreorder(e) {
+        e.preventDefault();
+        const v = [
+          validateField("f-name", "err-name", (v) => v.trim().length >= 2),
+          validateField("f-email", "err-email", isEmail),
+          validateField("f-phone", "err-phone", isPhone),
+          validateField("f-country", "err-country", (v) => v !== ""),
+          validateField("f-city", "err-city", (v) => v.trim().length >= 2),
+          validateField(
+            "f-address",
+            "err-address",
+            (v) => v.trim().length >= 5,
+          ),
+          validateField("f-product", "err-product", (v) => v !== ""),
+        ];
+        if (v.includes(false)) return;
+        const btn = document.getElementById("submit-btn");
+        document.getElementById("submit-text").style.display = "none";
+        document.getElementById("submit-spinner").style.display =
+          "inline-block";
+        btn.disabled = true;
+
+        // Simulate API call
+        await new Promise((r) => setTimeout(r, 1600));
+
+        const order = {
+          id: "NJD-" + Date.now(),
+          ref:
+            "NJD-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+          customer: {
+            name: document.getElementById("f-name").value.trim(),
+            email: document.getElementById("f-email").value.trim(),
+            phone: document.getElementById("f-phone").value.trim(),
+            country: document.getElementById("f-country").value,
+            city: document.getElementById("f-city").value.trim(),
+            address: document.getElementById("f-address").value.trim(),
+            company: document.getElementById("f-company").value.trim(),
+          },
+          product: document.getElementById("f-product").value,
+          productName:
+            getProduct(document.getElementById("f-product").value)?.name || "",
+          quantity: parseInt(document.getElementById("f-qty").value),
+          notes: document.getElementById("f-notes").value.trim(),
+          status: "preorder_received",
+          stockStatusSnapshot: "out_of_stock",
+          createdAt: new Date().toISOString(),
+        };
+        await DB.saveOrder(order);
+        document.getElementById("order-ref").textContent = order.ref;
+        document.getElementById("preorder-form").style.display = "none";
+        document.querySelector(".stock-banner").style.display = "none";
+        document.querySelector(".preorder-available").style.display = "none";
+        document.getElementById("preorder-success").style.display = "block";
+        showToast("Preorder confirmed! Ref: " + order.ref, "success");
+      }
+      function resetPreorderForm() {
+        document.getElementById("preorder-form").style.display = "block";
+        document.querySelector(".stock-banner").style.display = "flex";
+        document.querySelector(".preorder-available").style.display = "block";
+        document.getElementById("preorder-success").style.display = "none";
+        document.getElementById("preorder-form").reset();
+        qty = 1;
+        document.getElementById("qty-display").textContent = 1;
+        document.getElementById("f-qty").value = 1;
+        document.getElementById("submit-btn").disabled = false;
+        document.getElementById("submit-text").style.display = "inline";
+        document.getElementById("submit-spinner").style.display = "none";
+      }
+
+      // ================== CONTACT FORM ==================
+      async function submitContact(e) {
+        e.preventDefault();
+        const v = [
+          validateField("c-name", "cerr-name", (v) => v.trim().length >= 2),
+          validateField("c-email", "cerr-email", isEmail),
+          validateField("c-subject", "cerr-subject", (v) => v !== ""),
+          validateField("c-msg", "cerr-msg", (v) => v.trim().length >= 10),
+        ];
+        if (v.includes(false)) return;
+        const btn = document.getElementById("contact-submit-btn");
+        document.getElementById("contact-submit-text").style.display = "none";
+        document.getElementById("contact-submit-spinner").style.display =
+          "inline-block";
+        btn.disabled = true;
+
+        const name = document.getElementById("c-name").value;
+        const email = document.getElementById("c-email").value;
+        const subject = document.getElementById("c-subject").value;
+        const msg = document.getElementById("c-msg").value;
+
+        try {
+          const formData = new FormData();
+          formData.append("name", name);
+          formData.append("email", email);
+          formData.append("_subject", "NAJDA Contact: " + subject);
+          formData.append("message", msg);
+          formData.append("_captcha", "false");
+
+          await fetch("https://formsubmit.co/contact.najda@gmail.com", {
+            method: "POST",
+            body: formData,
+          });
+        } catch (err) {
+          console.error("Email send error:", err);
+        }
+
+        document.getElementById("contact-form").style.display = "none";
+        document.getElementById("contact-success").style.display = "block";
+        showToast("Message sent successfully!", "success");
+      }
+
+      // ================== ADMIN ==================
+      let adminFilter = "all";
+      async function renderAdmin() {
+        const orders = await DB.getOrders();
+        const stats = document.getElementById("admin-stats");
+        const braceletOrders = orders.filter((o) => o.product === "bracelet");
+        const jacketOrders = orders.filter((o) => o.product === "jacket");
+        const totalQty = orders.reduce((a, o) => a + (o.quantity || 0), 0);
+        stats.innerHTML = `
+    <div class="admin-stat"><span class="admin-stat-num">${orders.length}</span><div class="admin-stat-label">Total Preorders</div></div>
+    <div class="admin-stat"><span class="admin-stat-num">${totalQty}</span><div class="admin-stat-label">Total Units Reserved</div></div>
+    <div class="admin-stat"><span class="admin-stat-num">${braceletOrders.length}</span><div class="admin-stat-label">Smart Bracelet Orders</div></div>
+    <div class="admin-stat"><span class="admin-stat-num">${jacketOrders.length}</span><div class="admin-stat-label">Life Jacket Orders</div></div>`;
+        filterOrders();
+      }
+      async function filterOrders() {
+        const orders = await DB.getOrders();
+        const q =
+          (
+            document.getElementById("admin-search") || {}
+          ).value?.toLowerCase() || "";
+        const filtered = orders
+          .filter((o) => {
+            const matchFilter =
+              adminFilter === "all" || o.product === adminFilter;
+            const matchSearch =
+              !q ||
+              o.customer.name.toLowerCase().includes(q) ||
+              o.customer.email.toLowerCase().includes(q) ||
+              o.productName.toLowerCase().includes(q) ||
+              o.customer.country.toLowerCase().includes(q);
+            return matchFilter && matchSearch;
+          })
+          .reverse();
+        const tbody = document.getElementById("orders-tbody");
+        const noOrders = document.getElementById("no-orders");
+        if (filtered.length === 0) {
+          tbody.innerHTML = "";
+          noOrders.style.display = "block";
+          return;
+        }
+        noOrders.style.display = "none";
+        tbody.innerHTML = filtered
+          .map(
+            (o, i) => `
+    <tr onclick="showOrderDetail('${o.id}')" style="cursor:pointer">
+      <td style="color:var(--teal);font-size:.78rem;font-family:'Inter',sans-serif">${o.ref || o.id.slice(-6)}</td>
+      <td class="td-name">${o.customer.name}</td>
+      <td style="font-size:.82rem">${o.customer.email}</td>
+      <td>${o.customer.country}</td>
+      <td style="font-size:.82rem">${o.productName}</td>
+      <td style="text-align:center;font-weight:600;color:var(--teal)">${o.quantity}</td>
+      <td><span class="status-badge status-preorder">Preorder</span></td>
+      <td style="font-size:.78rem;color:var(--muted)">${new Date(o.createdAt).toLocaleDateString()}</td>
+    </tr>`,
+          )
+          .join("");
+      }
+      function setFilter(f, btn) {
+        adminFilter = f;
+        document
+          .querySelectorAll(".admin-filter-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        filterOrders();
+      }
+      function showOrderDetail(orderId) {
+        const o = DB.getOrders().find((x) => x.id === orderId);
+        if (!o) return;
+        const panel = document.getElementById("order-detail-panel");
+        document.getElementById("order-detail-content").innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+      <div><div class="spec-label">Reference</div><div class="spec-val" style="color:var(--teal)">${o.ref}</div></div>
+      <div><div class="spec-label">Date</div><div class="spec-val">${new Date(o.createdAt).toLocaleString()}</div></div>
+      <div><div class="spec-label">Name</div><div class="spec-val">${o.customer.name}</div></div>
+      <div><div class="spec-label">Email</div><div class="spec-val">${o.customer.email}</div></div>
+      <div><div class="spec-label">Phone</div><div class="spec-val">${o.customer.phone}</div></div>
+      <div><div class="spec-label">Country</div><div class="spec-val">${o.customer.country}</div></div>
+      <div><div class="spec-label">City</div><div class="spec-val">${o.customer.city}</div></div>
+      <div><div class="spec-label">Company</div><div class="spec-val">${o.customer.company || "—"}</div></div>
+      <div style="grid-column:1/-1"><div class="spec-label">Shipping Address</div><div class="spec-val">${o.customer.address}</div></div>
+      <div><div class="spec-label">Product</div><div class="spec-val">${o.productName}</div></div>
+      <div><div class="spec-label">Quantity</div><div class="spec-val" style="color:var(--teal);font-family:'Inter',sans-serif;font-size:1.1rem">${o.quantity} unit${o.quantity > 1 ? "s" : ""}</div></div>
+      <div><div class="spec-label">Order Status</div><div class="spec-val"><span class="status-badge status-preorder">Preorder Received</span></div></div>
+      <div><div class="spec-label">Stock Snapshot</div><div class="spec-val" style="font-size:.85rem;color:var(--muted)">${o.stockStatusSnapshot}</div></div>
+      ${o.notes ? `<div style="grid-column:1/-1"><div class="spec-label">Notes</div><div class="spec-val">${o.notes}</div></div>` : ""}
+    </div>`;
+        panel.style.display = "block";
+        panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+      function exportCSV() {
+        const orders = DB.getOrders();
+        if (!orders.length) {
+          showToast("No orders to export.", "");
+          return;
+        }
+        const headers = [
+          "Ref",
+          "Name",
+          "Email",
+          "Phone",
+          "Country",
+          "City",
+          "Company",
+          "Address",
+          "Product",
+          "Quantity",
+          "Status",
+          "Date",
+        ];
+        const rows = orders.map((o) => [
+          o.ref,
+          o.customer.name,
+          o.customer.email,
+          o.customer.phone,
+          o.customer.country,
+          o.customer.city,
+          o.customer.company || "",
+          o.customer.address,
+          o.productName,
+          o.quantity,
+          "preorder_received",
+          new Date(o.createdAt).toLocaleString(),
+        ]);
+        const csv = [headers, ...rows]
+          .map((r) =>
+            r
+              .map((v) => '"' + (v || "").toString().replace(/"/g, '""') + '"')
+              .join(","),
+          )
+          .join("\n");
+        const a = document.createElement("a");
+        a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+        a.download = "najda_preorders_" + Date.now() + ".csv";
+        a.click();
+        showToast("CSV exported successfully!", "success");
+      }
+
+      // ================== FAQ TOGGLE ==================
+      function toggleFaq(el) {
+        const item = el.closest(".faq-item");
+        item.classList.toggle("open");
+      }
+
+      // ================== TOAST ==================
+      function showToast(msg, type) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className =
+          "toast " +
+          (type === "success" ? "success" : type === "error" ? "error-t" : "");
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 3500);
+      }
+
+      // ================== NEWSLETTER ==================
+      function subscribeNewsletter() {
+        const e = document.getElementById("newsletter-email");
+        if (!isEmail(e.value)) {
+          showToast("Please enter a valid email address.", "error");
+          return;
+        }
+        showToast("You're on the list! We'll notify you at launch.", "success");
+        e.value = "";
+      }
+
+      // ================== SEED DEMO DATA ==================
+      function seedDemoData() {
+        if (DB.getOrders().length > 0) return;
+        const demoOrders = [
+          {
+            id: "demo1",
+            ref: "NJD-A4K92F",
+            customer: {
+              name: "Ahmed Al-Rashidi",
+              email: "ahmed@maritime.eg",
+              phone: "+20 100 111 2233",
+              country: "Egypt",
+              city: "Alexandria",
+              address: "15 Corniche Road, Alexandria 21519",
+              company: "Red Sea Shipping Co.",
+            },
+            product: "bracelet",
+            productName: "NAJDA Smart Bracelet",
+            quantity: 3,
+            notes: "For our offshore crew.",
+            status: "preorder_received",
+            stockStatusSnapshot: "out_of_stock",
+            createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+          },
+          {
+            id: "demo2",
+            ref: "NJD-B9W31X",
+            customer: {
+              name: "Sara Benali",
+              email: "s.benali@coastguard.dz",
+              phone: "+213 555 000 111",
+              country: "Jordan",
+              city: "Aqaba",
+              address: "Harbor Authority Building, Aqaba",
+              company: "Jordan Maritime Authority",
+            },
+            product: "jacket",
+            productName: "NAJDA Smart Life Jacket",
+            quantity: 10,
+            notes: "Fleet order for rescue team.",
+            status: "preorder_received",
+            stockStatusSnapshot: "out_of_stock",
+            createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+          },
+          {
+            id: "demo3",
+            ref: "NJD-C2P55M",
+            customer: {
+              name: "Dina Petrova",
+              email: "dina.dive@proton.me",
+              phone: "+20 122 333 4455",
+              country: "Egypt",
+              city: "Sharm El-Sheikh",
+              address: "Naama Bay Dive Center, Sharm",
+              company: "",
+            },
+            product: "bracelet",
+            productName: "NAJDA Smart Bracelet",
+            quantity: 1,
+            notes: "Personal order, dive use.",
+            status: "preorder_received",
+            stockStatusSnapshot: "out_of_stock",
+            createdAt: new Date(Date.now() - 86400000).toISOString(),
+          },
+        ];
+             demoOrders.forEach((o) => {
+          const existing = JSON.parse(localStorage.getItem("najda_orders") || "[]");
+          if (!existing.find((x) => x.id === o.id)) {
+            existing.push(o);
+            localStorage.setItem("najda_orders", JSON.stringify(existing));
+          }
+        });
+      }
+
+      // ================== INIT ==================
+      window.addEventListener("DOMContentLoaded", () => {
+        renderProducts("home-products", PRODUCTS);
+        seedDemoData();
+      });
+    </script>
+  </body>
+</html>
